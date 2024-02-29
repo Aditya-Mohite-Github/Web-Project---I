@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Expense Tracker - Login</title>
-    <link rel="stylesheet" href="expense.css">
+    <link rel="stylesheet" href="cssfiles\login.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"> </script>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
@@ -45,9 +45,9 @@
                     <br><br>
                     <button type="submit">Login</button>
                 </form>
+                <br>
+                <p> if you don't have account <a href="register.php"> Register </a> now !!!</p>
             </section>
-            <br>
-            <p> if you don't have account <a href="register.php"> Register </a> now !!!</p>
         </center>
     </main>
 
