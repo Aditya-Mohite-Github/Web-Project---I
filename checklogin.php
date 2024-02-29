@@ -3,9 +3,14 @@ include "dbconnection.php";
 // Start session
 session_start();
 
-// Check if form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Check login credentials (you should validate against a database)
+
+    if (strlen($_POST['login_password']) < 8 || !preg_match("/[A-Za-z0-9]+/",$_POST['login_password'] )) {
+        $_SESSION['error'] = "Invalid Password";
+        header("Location: login.php");
+        exit;
+    }
+
     $username = $_POST['login_username'];
     $password = $_POST['login_password'];
 

@@ -19,14 +19,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $result = mysqli_query($conn, $sql);
 
     if (mysqli_num_rows($result) > 0) {
+        echo '<table class="table table-striped">';
+        echo '<thead class="thead-dark">';
+        echo '<tr><th>Description</th><th>Amount</th><th>Date</th></tr>';
+        echo '</thead>';
+        echo '<tbody>';
 
         while ($row = mysqli_fetch_assoc($result)) {
-            echo "<li>";
-            echo "Description: " . $row["DESCRIPTION"] . " | Amount: " . $row["AMOUNT"] . " | Date: " . $row["TRANSACTION_DATE"];
-            echo "<button onclick=\"editRecord(" . $row["ID"] . ")\">Edit</button>";
-            echo "<button onclick=\"deleteRecord(" . $row["ID"] . ")\">Delete</button>";
-            echo "</li>";
+            echo '<tr>';
+            echo '<td>' . $row["DESCRIPTION"] . '</td>';
+            echo '<td>₹' . $row["AMOUNT"] . '</td>';
+            echo '<td>' . $row["TRANSACTION_DATE"] . '</td>';
+            echo '</tr>';
         }
+        echo '</tbody>';
+        echo '</table>';
+
     } else {
         echo '<div class="alert alert-warning" role="alert">
         No Records Founded.
