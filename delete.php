@@ -1,6 +1,8 @@
+<!-- delete.php -->
 <?php
 session_start();
 
+// Redirect to main page if user is not logged in
 if (!isset($_SESSION['username'])) {
     header("Location: expense.php");
     exit(); 
@@ -16,11 +18,9 @@ if (isset($_GET["id"])) {
     // Get the record ID from the request
     $recordId = $_GET["id"];
 
-    // Prepare SQL statement to delete the record
+    // Prepare and execute SQL query to delete the record
     $stmt = $conn->prepare("DELETE FROM expenses WHERE ID = ? AND USER = ?");
     $stmt->bind_param("is", $recordId, $user);
-
-    // Execute the SQL statement
     if ($stmt->execute()) {
         // Deletion successful
         echo "Record deleted successfully.";
@@ -35,5 +35,4 @@ if (isset($_GET["id"])) {
     // No record ID provided in the request
     echo "No record ID provided.";
 }
-
 ?>
