@@ -20,8 +20,12 @@ function fetchExpenseRecords($conn)
     $stmt->bind_param("s", $user);
     $stmt->execute();
     $result = $stmt->get_result();
-    // Fetch all expense records into an array
-    $records = $result->fetch_all(MYSQLI_ASSOC);
+    if ($result->num_rows > 0) {
+        // Fetch all expense records into an array
+        $records = $result->fetch_all(MYSQLI_ASSOC);
+    } else {
+        $records = "NO RECORD";
+    }
     return $records;
 }
 
@@ -40,20 +44,26 @@ fwrite($fileHandle, "Expense Records for User: " . $_SESSION['username'] . "\n\n
 // Write headers
 $header = sprintf("%-10s %-60s %-20s %-20s\n", "ID", "Description", "Amount", "Transaction Date");
 fwrite($fileHandle, $header);
-fwrite($fileHandle , str_repeat('-' , 120) . "\n");
+fwrite($fileHandle, str_repeat('-', 120) . "\n");
 
-// Write expense records to the file
-foreach ($expenseRecords as $record) {
-    // Format each record
-    $formattedRecord = sprintf("%-10s %-60s %-20s %-20s\n", $record['ID'], $record['DESCRIPTION'], $record['AMOUNT'], $record['TRANSACTION_DATE']);
-
-    // Write the formatted record to the file
+// Check if there are any expense records
+if ($expenseRecords == "NO RECORD") {
+    // If no records found, write a message to the file
+    $formattedRecord = sprintf("%-60s\n", $expenseRecords);
     fwrite($fileHandle, $formattedRecord);
+} else {
+    // Write expense records to the file
+    foreach ($expenseRecords as $record) {
+        // Format each record
+        $formattedRecord = sprintf("%-10s %-60s %-20s %-20s\n", $record['ID'], $record['DESCRIPTION'], $record['AMOUNT'], $record['TRANSACTION_DATE']);
+
+        // Write the formatted record to the file
+        fwrite($fileHandle, $formattedRecord);
+    }
 }
 
 // Close the file handle
 fclose($fileHandle);
-
 
 // Set the content type header to indicate that a text file is being downloaded
 header('Content-Type: application/octet-stream');
