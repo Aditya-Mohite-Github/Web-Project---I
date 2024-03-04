@@ -1,0 +1,74 @@
+/* Edit form CSS */
+
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-image: url("blurred-colorful-wallpaper-background_976742-179.avif");
+    background-repeat: no-repeat;
+    background-size: cover;
+    opacity: 1.0;
+}
+
+.header {
+    background-color: #000000;
+    color: #fff;
+    padding: 20px 0;
+}
+#header {
+    justify-content: space-between;
+    display: flex;
+}
+
+.header h1 {
+    margin: 0;
+}
+
+.edit-form {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.edit-form h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.edit-form label {
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.edit-form input[type="text"],
+.edit-form input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+}
+
+.edit-form button[type="submit"] {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.edit-form button[type="submit"]:hover {
+    background-color: #000000;
+}
+
+/* Optional: Add any additional styles or overrides as needed */
