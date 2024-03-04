@@ -88,3 +88,28 @@ button[type="submit"]:hover {
 .alert {
     animation: slideInFromLeft 1.0s ease forwards;
 }
+.password-field {
+    position: relative;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    z-index: 1; 
+}
+
+.password-field {
+    position: relative; 
+}
+
+.password-toggle {
+    position: absolute;
+    right: 5px; 
+    top: 50%;
+    bottom: -10%;
+    transform: translateY(-50%);
+    cursor: pointer; 
+}
