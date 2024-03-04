@@ -2,38 +2,49 @@
 <html lang="en">
 
 <head>
+    <!-- Metadata -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Expense Tracker - Dashboard</title>
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Bootstrap CSS (older version) -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
     <link rel="stylesheet" href="cssfiles\expense.css">
 </head>
 
 <body>
+    <!-- Header -->
     <header class="header">
         <div id="header">
             <h1 id="logo">Expense Tracker</h1>
+            <!-- Logout Button -->
             <form action="logout.php" method="post">
-                <button type="submit" class="btn btn-danger"> <span class ="glyphicon glyphicon-log-out"> </span> Logout </button>
+                <button type="submit" class="btn btn-danger"> <span class="glyphicon glyphicon-log-out"> </span> Logout
+                </button>
             </form>
         </div>
     </header>
 
     <?php
+    // Start session
     session_start();
+    // Check if user is logged in
     if (!isset($_SESSION['username'])) {
+        // Redirect to login page if not logged in
         header("Location: login.php");
         exit();
     }
+    // Display welcome message
     echo '<div id="welcome" class="alert alert-success" role="alert"> <center> <b> Welcome, ' . $_SESSION['username'] . '! </b> </center> </div>';
     ?>
+    <!-- Main Content -->
     <main class="main">
         <section class="expense-form">
+            <!-- Add New Expense Form -->
             <h2>Add New Expense</h2>
             <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
                 <label for="description"> Description : </label>
@@ -42,6 +53,7 @@
                 <label for="amount"> Amount : </label>
                 <input type="number" name="amt" id="amountInput" required>
                 <br><br>
+                <!-- Hidden field for date -->
                 <input type="hidden" name="date" id="currentDate" pattern="\d{4}-\d{2}-\d{2}" required>
                 <button type="submit" class="btn btn-success"> <span class="glyphicon glyphicon-plus"> </span>Add
                     Expense</button>
@@ -49,6 +61,7 @@
 
             <br> <br>
             <?php
+            // Include database connection file
             include "dbconnection.php";
 
             // Function to add expense to the database
@@ -79,6 +92,7 @@
                 // Add expense to the database
                 $success = addExpense($conn, $description, $amount, $date);
 
+                // Display success or error message
                 if ($success) {
                     echo '<div class="alert alert-success" role="alert">
                             Expense added successfully.
@@ -93,34 +107,8 @@
 
             <br> <br>
 
-            <!-- Edit Modal -->
-            <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="editModalLabel">Edit Expense</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form id="editForm">
-                                <input type="hidden" id="record_id">
-                                <label for="edit_description">Description:</label>
-                                <input type="text" name="edit_desc" id="edit_description" class="form-control" required>
-                                <br>
-                                <label for="edit_amount">Amount:</label>
-                                <input type="number" name="edit_amt" id="edit_amount" class="form-control" required>
-                                <input type="hidden" id="edit_date" name="edit_date">
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                            <button type="button" class="btn btn-primary" onclick="updateRecord()">Save Changes</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             <section class="expense-list">
+                <!-- Search Expense List -->
                 <h2>Search Expense List:</h2>
                 <div>
                     <!-- Search form -->
@@ -140,23 +128,25 @@
                 <br> <br>
 
                 <h2>Expense List:</h2>
+                <!-- Delete All Records Button -->
                 <button class="btn btn-danger" onclick="deleteAllRecords()" id="deleteall" data-bs-toggle="tooltip"
                     title="Delete all of Your Records !"> <span class="glyphicon glyphicon-trash"> </span> Delete All
                     Records</button>
+                <!-- Download Records Button -->
                 <button class="btn btn-danger" onclick="#" id="download" data-bs-toggle="tooltip"
                     title="Downloads a file of all Records"> <span class="glyphicon glyphicon-download-alt"> </span>
                     Download Records </button>
                 <br><br>
+
                 <ul id="expenseList">
                     <?php
-                    if (isset($_SESSION['downloaderror'])) {
-                        echo '<div id="welcome "class="alert alert-danger" role="alert"> <b>  ' . $_SESSION['downloaderror'] . ' </b> </div>';
-                        unset($_SESSION['downloaderror']);
+                    // Display success message if set
+                    if (isset($_SESSION['message'])) {
+                        echo '<div id="welcome "class="alert alert-success" role="alert"> <b>  ' . $_SESSION['message'] . ' </b> </div>';
+                        unset($_SESSION['message']);
                     }
-                    if (isset($_SESSION['downloadsuccess'])) {
-                        echo '<div id="welcome "class="alert alert-success" role="alert"> <b> ' . $_SESSION['downloadsuccess'] . ' </b> </div>';
-                        unset($_SESSION['downloadsuccess']);
-                    }
+
+                    // Include expense list
                     include "expense_list.php";
                     ?>
                 </ul>
@@ -164,6 +154,7 @@
         </section>
     </main>
 
+    <!-- Footer -->
     <div style="position: fixed; bottom: 0; right: 0; font-family: 'Roboto', sans-serif;">
         <h5 align="right" style="font-size: 14px"> <u> &copy; Created By Aditya Mohite <br>
                 All Rights Reserved </u>
@@ -250,24 +241,29 @@
             xhr.send("id=" + record_id + "&desc=" + description + "&amt=" + amount + "&date=" + date);
         }
 
+        //function to handle record editing
+        function redirectToEdit(recordId) {
+            window.location.href = 'edit.php?id=' + recordId;
+        }
+
         // Function to handle record deletion
         function deleteRecord(id) {
-                // Make AJAX request to delete.php
-                var xhr = new XMLHttpRequest();
-                xhr.onreadystatechange = function () {
-                    if (xhr.readyState === XMLHttpRequest.DONE) {
-                        if (xhr.status === 200) {
-                            // If deletion is successful, reload the expense list
-                            loadExpenseList();
-                        } else {
-                            // If an error occurs, log the error message
-                            console.error("Error deleting record: " + xhr.responseText);
-                        }
+            // Make AJAX request to delete.php
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        // If deletion is successful, reload the expense list
+                        loadExpenseList();
+                    } else {
+                        // If an error occurs, log the error message
+                        console.error("Error deleting record: " + xhr.responseText);
                     }
-                };
-                xhr.open("GET", "delete.php?id=" + id, true);
-                xhr.send();
-            
+                }
+            };
+            xhr.open("GET", "delete.php?id=" + id, true);
+            xhr.send();
+
         }
 
         // Function to load the expense list using AJAX
@@ -291,7 +287,6 @@
 
 
         function deleteAllRecords() {
-            if (confirm("Are you sure you want to delete all records?")) {
                 var xhr = new XMLHttpRequest();
                 xhr.onreadystatechange = function () {
                     if (xhr.readyState === XMLHttpRequest.DONE) {
@@ -300,7 +295,6 @@
                             loadExpenseList(); // Reload the expense list after deletion
                             var searchResults = document.getElementById("searchResults");
                             searchResults.innerHTML = ""; // Clear the search results
-                            alert("All records deleted successfully.");
                         } else {
                             // Handle deletion failure
                             console.error("Error deleting records: " + xhr.responseText);
@@ -310,9 +304,10 @@
                 };
                 xhr.open("GET", "deleteall.php", true);
                 xhr.send();
-            }
+            
         }
 
+        // AJAX request to download records
         document.getElementById("download").addEventListener("click", function () {
             var xhr = new XMLHttpRequest();
             xhr.onreadystatechange = function () {
@@ -344,6 +339,8 @@
         });
 
     </script>
+    <!-- Bootstrap JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
