@@ -1,13 +1,18 @@
+
 <?php
 session_start();
 
+// Redirect to login page if user is not logged in
 if (!isset($_SESSION['username'])) {
     header("Location: login.php");
     exit();
 }
+
 // Include database connection or any necessary dependencies
 include "dbconnection.php";
+
 $user = $_SESSION['username'];
+
 // Function to delete all records from the expenses table
 function deleteAllRecords($conn, $user)
 {
@@ -23,5 +28,4 @@ function deleteAllRecords($conn, $user)
 
 // Call the function to delete all records
 deleteAllRecords($conn, $user);
-
 ?>
