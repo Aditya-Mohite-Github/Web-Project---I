@@ -4,6 +4,7 @@ session_start(); // Start session
 // Check if form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
+    // Check password length and pattern
     if (strlen($_POST['reg-password'] ) < 8) {
         $_SESSION['error'] = "Password must be at least 8 characters long";
         header("Location: register.php");
@@ -25,8 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST['reg-username'];
     $password = $_POST['reg-password'];
 
- 
-
+    // Prepare and execute SQL query to insert new user
     $query = $conn->prepare("INSERT INTO users (USERNAME, PASSWORD) VALUES (?, ?)");
     $query->bind_param("ss", $username, $password);
     if ($query->execute()) {
